@@ -6,7 +6,10 @@
   exclude-result-prefixes="ddi">
 
   <xsl:template match="foxml:datastream[@ID='DDI']/foxml:datastreamVersion[last()]">
-      <xsl:apply-templates select="ddi:*"/>
+    <xsl:param name="content"/>
+    <xsl:param name="prefix"></xsl:param>
+    <xsl:param name="suffix"></xsl:param>
+    <xsl:apply-templates select="$content/ddi:*"/>
   </xsl:template>
   
   <!-- Recursively traverse the tree -->
@@ -32,7 +35,7 @@
   <xsl:template match="ddi:*">
     <xsl:call-template name="ddi_build_field"> 
       <xsl:with-param name="elem_name">
-        <xsl:call-template name="test:flatten_full_path" />
+        <xsl:call-template name="ddi_flatten_full_path" />
       </xsl:with-param>  
     </xsl:call-template>
   </xsl:template>
