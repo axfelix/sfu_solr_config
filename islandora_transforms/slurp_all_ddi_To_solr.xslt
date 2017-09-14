@@ -15,7 +15,7 @@
   <!-- Recursively traverse the tree -->
   <xsl:template match="ddi:*">
      <xsl:if test="current()[not(*)]">
-        <xsl:apply-templates select="."/>
+         <xsl:call-template name="ddi_solr_output"/> 
      </xsl:if>
      <xsl:apply-templates select="ddi:*"/>
   </xsl:template>
@@ -32,7 +32,7 @@
   <!-- Create a flat list of all text nodes.
   ex. <field name="ddi_codeBook_stdyDscr_citation_titlStmt_titl_ms">NEBC Springs Database</field>
   -->
-  <xsl:template match="ddi:*">
+  <xsl:template name="ddi_solr_output">
     <xsl:call-template name="ddi_build_field"> 
       <xsl:with-param name="elem_name">
         <xsl:call-template name="ddi_flatten_full_path" />
