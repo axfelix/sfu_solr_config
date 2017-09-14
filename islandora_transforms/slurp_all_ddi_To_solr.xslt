@@ -5,10 +5,11 @@
   xmlns:ddi="ddi:codebook:2_5"
   exclude-result-prefixes="ddi">
 
+  <xsl:variable name="prefix" select="'ddi_'"/>
+  <xsl:variable name="suffix" select="'_ms'"/>
+
   <xsl:template match="foxml:datastream[@ID='DDI']/foxml:datastreamVersion[last()]">
     <xsl:param name="content"/>
-    <xsl:param name="prefix"></xsl:param>
-    <xsl:param name="suffix"></xsl:param>
     <xsl:apply-templates select="$content/ddi:*"/>
   </xsl:template>
   
@@ -60,7 +61,6 @@
 
   <!-- Flatten the full path of this node in string form -->
   <xsl:template name="ddi_flatten_full_path">
-
     <xsl:for-each select="ancestor-or-self::*">
       <xsl:value-of select="local-name()"/>
       <!-- Don't add underscore to last path segment -->
@@ -72,9 +72,9 @@
 
   <!-- Add solr prefix and suffix to the string -->
   <xsl:template name="ddi_prefix_name_suffix">
-    <xsl:param name="prefix">ddi_</xsl:param>
+    <xsl:param name="pref"><xsl:value-of select="$prefix"/></xsl:param>
     <xsl:param name="name"/>
-    <xsl:param name="suffix">_ms</xsl:param>
-    <xsl:value-of select="concat($prefix, $name, $suffix)"/>
+    <xsl:param name="suff"><xsl:value-of select="$suffix"/></xsl:param>
+    <xsl:value-of select="concat($pref, $name, $suff)"/>
   </xsl:template>
 </xsl:stylesheet>
