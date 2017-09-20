@@ -1,12 +1,8 @@
-
 <xsl:stylesheet version="1.0" 
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
   xmlns:foxml="info:fedora/fedora-system:def/foxml#" 
   xmlns:ddi="ddi:codebook:2_5"
   exclude-result-prefixes="ddi">
-
-  <xsl:variable name="prefix" select="'ddi_'"/>
-  <xsl:variable name="suffix" select="'_ms'"/>
 
   <xsl:template match="foxml:datastream[@ID='DDI']/foxml:datastreamVersion[last()]">
     <xsl:param name="content"/>
@@ -43,16 +39,18 @@
 
   <!-- Build the Solr field -->
   <xsl:template name="ddi_build_field">
+    <xsl:param name="pref">ddi_</xsl:param>
     <xsl:param name="elem_name"/>
+    <xsl:param name="suff">_ms</xsl:param>
     <xsl:param name="value">
       <xsl:value-of select="."/>
     </xsl:param>
     <xsl:element name="field">
       <xsl:attribute name="name">
         <xsl:call-template name="ddi_prefix_name_suffix">
-          <xsl:with-param name="name">
-            <xsl:value-of select="$elem_name"/>
-          </xsl:with-param>
+          <xsl:with-param name="prefix" select="$pref"/>
+          <xsl:with-param name="name" select="$elem_name"/>
+          <xsl:with-param name="suffix" select="$suff"/>
         </xsl:call-template>
       </xsl:attribute>
       <xsl:value-of select="normalize-space($value)"/>
@@ -72,9 +70,9 @@
 
   <!-- Add solr prefix and suffix to the string -->
   <xsl:template name="ddi_prefix_name_suffix">
-    <xsl:param name="pref"><xsl:value-of select="$prefix"/></xsl:param>
+    <xsl:param name="prefix"/>
     <xsl:param name="name"/>
-    <xsl:param name="suff"><xsl:value-of select="$suffix"/></xsl:param>
+    <xsl:param name="suffix"/>
     <xsl:value-of select="concat($pref, $name, $suff)"/>
   </xsl:template>
 </xsl:stylesheet>
