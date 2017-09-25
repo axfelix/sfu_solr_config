@@ -73,6 +73,6 @@
     <xsl:param name="prefix"/>
     <xsl:param name="name"/>
     <xsl:param name="suffix"/>
-    <xsl:value-of select="concat($pref, $name, $suff)"/>
+    <xsl:value-of select="concat($prefix, $name, $suffix)"/>
   </xsl:template>
 </xsl:stylesheet>
