@@ -14,3 +14,37 @@ One major difference between solr 3.x and 4.x is when deploying configs they use
 You also have to copy the jars from solr/example/lib/ext/* to $CATALINA_HOME/webapps/solr/WEB-INF/lib/ for more information see https://wiki.apache.org/solr/SolrLogging#Using_the_example_logging_setup_in_containers_other_than_Jetty
 
 Requires Gsearch 2.8+
+
+Deployment
+
+cd /opt
+git clone https://github.com/discoverygarden/sfu_solr_config.git
+cd /opt/sfu_solr_config
+git checkout 4.x
+
+mkdir -p /usr/local/fedora/tomcat/webapps/fedoragsearch/WEB-INF/classes/fgsconfigFinal/index/FgsIndex/islandora_transforms/
+
+#back everything up
+DATE=`date +%Y-%m-%d-%H-%M-%S`
+mkdir -p ~/backups/solr-config-${DATE}
+cp -r /usr/local/fedora/solr/collection1/conf ~/backups/solr-config-${DATE}/
+cp -r /usr/local/fedora/tomcat/webapps/fedoragsearch/WEB-INF/classes/fgsconfigFinal/index/FgsIndex/islandora_transforms ~/backups/solr-config-${DATE}/
+cp /usr/local/fedora/tomcat/webapps/fedoragsearch/WEB-INF/classes/fgsconfigFinal/index/FgsIndex/foxmlToSolr.xslt ~/backups/solr-config-${DATE}/
+cp /usr/local/fedora/tomcat/webapps/fedoragsearch/WEB-INF/classes/fgsconfigFinal/index/FgsIndex/index.properties ~/backups/solr-config-${DATE}/
+
+
+#diff the new config vs. current config
+diff -r conf /usr/local/fedora/solr/collection1/conf
+diff -r islandora_transforms /usr/local/fedora/tomcat/webapps/fedoragsearch/WEB-INF/classes/fgsconfigFinal/index/FgsIndex/islandora_transforms
+diff foxmlToSolr.xslt /usr/local/fedora/tomcat/webapps/fedoragsearch/WEB-INF/classes/fgsconfigFinal/index/FgsIndex/foxmlToSolr.xslt
+diff index.properties /usr/local/fedora/tomcat/webapps/fedoragsearch/WEB-INF/classes/fgsconfigFinal/index/FgsIndex/index.properties
+
+
+#copy config to server location
+cp -r conf/* /usr/local/fedora/solr/collection1/conf/
+cp -r islandora_transforms/* /usr/local/fedora/tomcat/webapps/fedoragsearch/WEB-INF/classes/fgsconfigFinal/index/FgsIndex/islandora_transforms/
+cp foxmlToSolr.xslt /usr/local/fedora/tomcat/webapps/fedoragsearch/WEB-INF/classes/fgsconfigFinal/index/FgsIndex/foxmlToSolr.xslt
+cp index.properties /usr/local/fedora/tomcat/webapps/fedoragsearch/WEB-INF/classes/fgsconfigFinal/index/FgsIndex/index.properties
+
+stop and start tomcat via the startup and shutdown scripts in /usr/local/fedora/tomcat/bin/
+re-index solr if needed
