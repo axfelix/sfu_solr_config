@@ -20,7 +20,7 @@ Requires Gsearch 2.8+
 cd /opt
 git clone https://github.com/discoverygarden/sfu_solr_config.git
 cd /opt/sfu_solr_config
-git checkout 4.x
+git checkout 4.10.x
 
 mkdir -p /usr/local/fedora/tomcat/webapps/fedoragsearch/WEB-INF/classes/fgsconfigFinal/index/FgsIndex/islandora_transforms/
 ```
